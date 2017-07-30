@@ -29,10 +29,10 @@
 					.then( function(data) {
 						$scope.weatherData = data.data;
 						console.log(data);
-						$('.loading').hide();
+						$('.wrapper-loader').fadeOut("slow");
 					})
 					.catch( function() {
-						$('.loading').hide();
+						$('.wrapper-loader').fadeOut("slow");
 						$('.error').show().html("Sorry there has been an error connecting to the API");
 					})
 				})
@@ -41,7 +41,7 @@
 			$scope.initial();
 
 			$scope.search = function(location) {
-				$('.loading').show();
+				$('.wrapper-loader').fadeIn();
 
 				var location = $scope.location;
 				if (location != '') {
@@ -49,17 +49,16 @@
 						.then( function(data) {
 							$scope.weatherData = data.data;
 							console.log(data);
-							$('.loading').hide();
+							$('.wrapper-loader').fadeOut("slow");
 						})
 						.catch( function() {
-							$('.loading').hide();
+							$('.wrapper-loader').fadeOut("slow");
 							$('.error').show().html("Sorry there has been an error connecting to the API");
 						})
 					} else {
 						$scope.initial();
 					}
 			};
-
 		};
 
 		weatherController.$inject = ['$scope', 'weatherFactory'];

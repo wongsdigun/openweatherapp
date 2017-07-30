@@ -1,72 +1,116 @@
 <div>
-	<form ng-submit="search()">
-		<input type="text" ng-model="location" placeholder="Type and hit enter to update location"/>
-	</form>
 	<!--     <div class="key">
 	<h3>Key: <span class="cool">Cool</span> | <span class="mid">Mild</span> | <span class="hot">Hot</span><h3>
 	</div> -->
 	<h2 class="error" ng-show="!weatherData.name">{{weatherData.message}}</h2>
-	<h2 class="loading">Loading...</h2>
+	<!-- page content + floating button -->
 
-	<div ng-if="weatherData.name" class="card" ng-class="{hot: weatherData.main.temp >= 23, mid: weatherData.main.temp > 15, cool: weatherData.main.temp < 15 }">
-		<h2>{{weatherData.name}}, {{weatherData.sys.country}}</h2>
+	<!-- <div ng-if="weatherData.name" class="card" ng-class="{hot: weatherData.main.temp >= 23, mid: weatherData.main.temp > 15, cool: weatherData.main.temp < 15 }"> -->
+	<div class="card">
+		<form >
+			
+		</form>
+		<form class="site-search" ng-submit="search()">
+			<input id="search" class="site-search__input" type="text" ng-model="location" placeholder="Type and hit enter to update location"/>
+			<label for="search" class="site-search__icon">
+				<svg class="icon"><use xlink:href="#icon-search"></use></svg>
+			</label>
+			<button class="site-search__submit" type="submit" name="Submit" value=""></button>
+		</form>
+
+		<span style="display: none">
+			<svg xmlns="http://www.w3.org/2000/svg">
+			<symbol viewBox="0 0 512 512" id="icon-search">
+				<title>search</title>
+				<path id="search-magnifier-2-icon" d="M460.355,421.59L353.844,315.078c20.041-27.553,31.885-61.437,31.885-98.037	C385.729,124.934,310.793,50,218.686,50C126.58,50,51.645,124.934,51.645,217.041c0,92.106,74.936,167.041,167.041,167.041
+					c34.912,0,67.352-10.773,94.184-29.158L419.945,462L460.355,421.59z M100.631,217.041c0-65.096,52.959-118.056,118.055-118.056
+					c65.098,0,118.057,52.959,118.057,118.056c0,65.096-52.959,118.056-118.057,118.056C153.59,335.097,100.631,282.137,100.631,217.041 	z" /> </symbol>
+			</svg>
+		</span>
+
+		<div class="wrapper-loader"><span class="loader loader-quart"></span></div>
+		<div ng-if="weatherData.name" class="weather-info">
+			<div class="info-header">
+				<p class="city">{{weatherData.name}}, <span class="lighter">{{weatherData.sys.country}}</span></p>
+				<p class="date">{{day}}, {{fullDate}}</p>
+			</div>
+
+			<div class="main-info">
+				<div class="icon" ng-class="{hot: weatherData.main.temp >= 23, mid: weatherData.main.temp > 15, cool: weatherData.main.temp < 15 }">
+					<!-- Clear Sky -->
+						<!-- Day -->
+						<i ng-if="weatherData.weather[0].id == 800 && weatherData.dt < weatherData.sys.sunset" class="wi wi-day-sunny"></i>
+
+						<!-- Night -->
+						<i ng-if="weatherData.weather[0].id == 800 && weatherData.dt > weatherData.sys.sunset" class="wi wi-night-clear"></i>
+					<!-- Clear Sky -->
 
 
-		<div class="icon">
-		<!-- Clear Sky -->
+					<!-- Cloudy -->
+					<i ng-if="weatherData.weather[0].id >= 801 && weatherData.weather[0].id <= 804 && weatherData.dt < weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-day-cloudy"></i>
 
-		<!-- Day -->
-		<i ng-if="weatherData.weather[0].id == 800 && weatherData.dt < weatherData.sys.sunset" class="wi wi-day-sunny"></i>
+					<i ng-if="weatherData.weather[0].id >= 801 && weatherData.weather[0].id <= 804 && weatherData.dt > weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-night-cloudy"></i>
 
-		<!-- Night -->
-		<i ng-if="weatherData.weather[0].id == 800 && weatherData.dt > weatherData.sys.sunset" class="wi wi-night-clear"></i>
+					<i ng-if="weatherData.weather[0].id >= 801 && weatherData.weather[0].id <= 804 && weatherData.clouds.all >= 50" class="wi wi-cloudy"></i>
 
+					<!-- Drizzle -->
+					<i ng-if="weatherData.weather[0].id >= 300 && weatherData.weather[0].id <= 321 && weatherData.dt < weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-day-rain-mix"></i>
 
-		<!-- Cloudy -->
-		<i ng-if="weatherData.weather[0].id >= 801 && weatherData.weather[0].id <= 804 && weatherData.dt < weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-day-cloudy"></i>
+					<i ng-if="weatherData.weather[0].id >= 300 && weatherData.weather[0].id <= 321 && weatherData.dt > weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-night-alt-rain-mix"></i>
 
-		<i ng-if="weatherData.weather[0].id >= 801 && weatherData.weather[0].id <= 804 && weatherData.dt > weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-night-cloudy"></i>
+					<i ng-if="weatherData.weather[0].id >= 300 && weatherData.weather[0].id <= 321 && weatherData.clouds.all >= 50" class="wi wi-rain-mix"></i>
 
-		<i ng-if="weatherData.weather[0].id >= 801 && weatherData.weather[0].id <= 804 && weatherData.clouds.all >= 50" class="wi wi-cloudy"></i>
+					<!-- Rain -->
+					<i ng-if="weatherData.weather[0].id >= 500 && weatherData.weather[0].id <= 531 && weatherData.dt < weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-day-rain"></i>
 
-		<!-- Drizzle -->
-		<i ng-if="weatherData.weather[0].id >= 300 && weatherData.weather[0].id <= 321 && weatherData.dt < weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-day-rain-mix"></i>
+					<i ng-if="weatherData.weather[0].id >= 500 && weatherData.weather[0].id <= 531 && weatherData.dt > weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-night-rain"></i>
 
-		<i ng-if="weatherData.weather[0].id >= 300 && weatherData.weather[0].id <= 321 && weatherData.dt > weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-night-alt-rain-mix"></i>
+					<i ng-if="weatherData.weather[0].id >= 500 && weatherData.weather[0].id <= 531 && weatherData.clouds.all >= 50" class="wi wi-rain"></i>
 
-		<i ng-if="weatherData.weather[0].id >= 300 && weatherData.weather[0].id <= 321 && weatherData.clouds.all >= 50" class="wi wi-rain-mix"></i>
+					<!-- Snow -->
+					<i ng-if="weatherData.weather[0].id >= 600 && weatherData.weather[0].id <= 622 && weatherData.dt < weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-day-snow"></i>
 
-		<!-- Rain -->
-		<i ng-if="weatherData.weather[0].id >= 500 && weatherData.weather[0].id <= 531 && weatherData.dt < weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-day-rain"></i>
+					<i ng-if="weatherData.weather[0].id >= 600 && weatherData.weather[0].id <= 622 && weatherData.dt > weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-night-snow"></i>
 
-		<i ng-if="weatherData.weather[0].id >= 500 && weatherData.weather[0].id <= 531 && weatherData.dt > weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-night-rain"></i>
+					<i ng-if="weatherData.weather[0].id >= 600 && weatherData.weather[0].id <= 622 && weatherData.clouds.all >= 50" class="wi wi-snow"></i>
 
-		<i ng-if="weatherData.weather[0].id >= 500 && weatherData.weather[0].id <= 531 && weatherData.clouds.all >= 50" class="wi wi-rain"></i>
+					<!-- Thunder Storms -->
+					<i ng-if="weatherData.weather[0].id >= 200 && weatherData.weather[0].id <= 232 && weatherData.dt < weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-day-thunderstorm"></i>
 
-		<!-- Snow -->
-		<i ng-if="weatherData.weather[0].id >= 600 && weatherData.weather[0].id <= 622 && weatherData.dt < weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-day-snow"></i>
+					<i ng-if="weatherData.weather[0].id >= 200 && weatherData.weather[0].id <= 232 && weatherData.dt > weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-night-thunderstorm"></i>
 
-		<i ng-if="weatherData.weather[0].id >= 600 && weatherData.weather[0].id <= 622 && weatherData.dt > weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-night-snow"></i>
+					<i ng-if="weatherData.weather[0].id >= 200 && weatherData.weather[0].id <= 232 && weatherData.clouds.all >= 50" class="wi wi-thunderstorm"></i>
 
-		<i ng-if="weatherData.weather[0].id >= 600 && weatherData.weather[0].id <= 622 && weatherData.clouds.all >= 50" class="wi wi-snow"></i>
+					<!-- Mist and Fog -->
 
-		<!-- Thunder Storms -->
-		<i ng-if="weatherData.weather[0].id >= 200 && weatherData.weather[0].id <= 232 && weatherData.dt < weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-day-thunderstorm"></i>
+					<i ng-if="weatherData.weather[0].id >= 701 && weatherData.weather[0].id <= 781" class="wi wi-fog"></i>
+				</div>
+				<div class="main-subinfo">
+					<p class="temp">{{weatherData.main.temp | number:0}}&deg;C</p>
+					<p class="description lighter">{{weatherData.weather[0].description}}</p>
+				</div>
+			</div>
 
-		<i ng-if="weatherData.weather[0].id >= 200 && weatherData.weather[0].id <= 232 && weatherData.dt > weatherData.sys.sunset && weatherData.clouds.all < 50" class="wi wi-night-thunderstorm"></i>
+			<div class="card-footer">
+				<div class="flex-block">
+					<div class="equalHWrap eqWrap">
+						<div class="equalHW eq">
+							<i class="wi wi-strong-wind"></i>
+							<p>{{weatherData.wind.speed}} m/s</p>
+						</div>
+						<div class="equalHW eq">
+							<i class="wi wi-raindrop"></i>
+							<p>{{weatherData.main.humidity}} %</p>
+						</div>
+						<div class="equalHW eq">
+							<i class="wi wi-barometer"></i>
+							<p>{{weatherData.main.pressure}} hPa</p>
+						</div>
+					</div>
+				</div>
+			</div>
 
-		<i ng-if="weatherData.weather[0].id >= 200 && weatherData.weather[0].id <= 232 && weatherData.clouds.all >= 50" class="wi wi-thunderstorm"></i>
-
-		<!-- Mist and Fog -->
-
-		 <i ng-if="weatherData.weather[0].id >= 701 && weatherData.weather[0].id <= 781" class="wi wi-fog"></i>
-	</div>
-
-	<p class="info">
-		<h3>{{weatherData.main.temp | number:0}}&deg;C</h3>{{weatherData.weather[0].main}}: {{weatherData.weather[0].description}}
-		<br>
-		{{day}}, {{fullDate}}
-	 </p>
+		</div>
 	</div>
 
 </div>
