@@ -1,7 +1,5 @@
 body {
-	text-align:center;
-	padding:0px 30px 120px;
-	line-height:1.3;
+	text-align: center;
 	background-color: #F3F4F8;
 	font-family: "Khula", sans-serif;
 }
@@ -116,13 +114,20 @@ form {
 	}
 }
 .weather-info {
-	margin-top: -46px;
+	margin-top: -30px;
 }
-.info-header {text-align: right;}
+.info-header {
+	text-align: right;
+	p {
+		margin: 0;
+		line-height: 1.6;
+	}
+}
 .main-info {
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
+	margin: 20px 0;
 }
 .main-subinfo {
 	display: block;

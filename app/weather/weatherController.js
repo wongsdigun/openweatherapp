@@ -4,6 +4,8 @@
 		var weatherController = function($scope, weatherFactory) {
 			$scope.location = '';
 			$scope.weatherData = null;
+			$scope.posLat = null;
+			$scope.posLon = null;
 
 			$scope.date = function () {
 				var dt = new Date()
@@ -24,6 +26,11 @@
 				navigator.geolocation.getCurrentPosition(function(position){
 					var lat = position.coords.latitude;
 					var lon = position.coords.longitude;
+					$scope.posLat = lat;
+					$scope.posLon = lon;
+
+					// console.log($scope.posLat);
+					// console.log($scope.posLon);
 
 					weatherFactory.getWeatherPos(lat, lon)
 					.then( function(data) {
