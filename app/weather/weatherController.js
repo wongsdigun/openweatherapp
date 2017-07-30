@@ -3,17 +3,18 @@
 (function() {
 		var weatherController = function($scope, weatherFactory) {
 			$scope.location = '';
+			$scope.weatherData = null;
 
 			$scope.date = function () {
 				var dt = new Date()
 				var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 				var dayName = days[dt.getDay()];
-				console.log('dayName');
+				console.log(dayName);
 				$scope.day = dayName;
 
 				var months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 				var fullDate = months[dt.getMonth()] + " " + dt.getDate() + ", " + dt.getFullYear();
-				console.log('fullDate');
+				console.log(fullDate);
 				$scope.fullDate = fullDate;
 			}
 
@@ -56,7 +57,7 @@
 			$scope.search = function(location) {
 				$('.loading').show();
 
-				var location = location;
+				var location = $scope.location;
 				if (location != '') {
 					weatherFactory.getCurrentWeather(location)
 						.then( function(data) {
