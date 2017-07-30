@@ -27,11 +27,27 @@
 						var lon = position.coords.longitude;
 						$scope.posLat = lat;
 						$scope.posLon = lon;
+
+						weatherFactory.getWeatherPos(posLat, posLon)
+						.then( function(data) {
+							$scope.weatherData = data;
+							console.log(data);
+							$('.loading').hide();
+						})
+						.catch( function() {
+							$('.loading').hide();
+							$('.error').show().html("Sorry there has been an error connecting to the API");
+						})
 					};
 					var geoError = function(position) {
 						alert('Error occurred. Error code: ' + error.code);
 					};
-					navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+					var options = {
+					  enableHighAccuracy: false,
+					  timeout: 5000,
+					  maximumAge: 0
+					};
+					navigator.geolocation.getCurrentPosition(geoSuccess, geoError, options);
 				};
 			};
 
@@ -42,7 +58,7 @@
 
 				var location = location;
 				if (location != '') {
-					weatherFactory.getForecast(location)
+					weatherFactory.getCurrentWeather(location)
 						.then( function(data) {
 							$scope.weatherData = data;
 							console.log(data);
