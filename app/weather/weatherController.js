@@ -27,7 +27,7 @@
 
 					weatherFactory.getWeatherPos(lat, lon)
 					.then( function(data) {
-						$scope.weatherData = data;
+						$scope.weatherData = data.data;
 						console.log(data);
 						$('.loading').hide();
 					})
@@ -47,7 +47,7 @@
 				if (location != '') {
 					weatherFactory.getCurrentWeather(location)
 						.then( function(data) {
-							$scope.weatherData = data;
+							$scope.weatherData = data.data;
 							console.log(data);
 							$('.loading').hide();
 						})
