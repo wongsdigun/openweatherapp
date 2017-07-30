@@ -21,35 +21,21 @@
 			$scope.date();
 
 			$scope.initial = function() {
-				window.onload = function() {
-					var geoSuccess = function(position) {
+				navigator.geolocation.getCurrentPosition(function(position){
+					var lat = position.coords.latitude;
+					var lon = position.coords.longitude;
 
-						var lat = position.coords.latitude;
-						var lon = position.coords.longitude;
-						$scope.posLat = lat;
-						$scope.posLon = lon;
-
-						weatherFactory.getWeatherPos(posLat, posLon)
-						.then( function(data) {
-							$scope.weatherData = data;
-							console.log(data);
-							$('.loading').hide();
-						})
-						.catch( function() {
-							$('.loading').hide();
-							$('.error').show().html("Sorry there has been an error connecting to the API");
-						})
-					};
-					var geoError = function(position) {
-						alert('Error occurred. Error code: ' + error.code);
-					};
-					var options = {
-					  enableHighAccuracy: false,
-					  timeout: 5000,
-					  maximumAge: 0
-					};
-					navigator.geolocation.getCurrentPosition(geoSuccess, geoError, options);
-				};
+					weatherFactory.getWeatherPos(lat, lon)
+					.then( function(data) {
+						$scope.weatherData = data;
+						console.log(data);
+						$('.loading').hide();
+					})
+					.catch( function() {
+						$('.loading').hide();
+						$('.error').show().html("Sorry there has been an error connecting to the API");
+					})
+				})
 			};
 
 			$scope.initial();
@@ -70,7 +56,7 @@
 							$('.error').show().html("Sorry there has been an error connecting to the API");
 						})
 					} else {
-						$scope.detectWeatherLocation();
+						$scope.initial();
 					}
 			};
 
